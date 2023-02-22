@@ -1,0 +1,90 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.wrapper {
+  position: relative;
+  /* left: 50%; */
+}
+
+.routine-table {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  width: 250px;
+  height: 100%;
+
+}
+
+.timeline {
+
+  width: 42px;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.timePoint {
+  height: 60px;
+  width: 100%;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 200;
+  color: #000000;
+}
+
+.timePoint-hour {
+  font-size: 16px;
+}
+
+.timePoint-hour::before {
+  content: "";
+  display: block;
+  height: 1px;
+  border-top: 1px solid #c0c0c073;
+  width: 244px;
+  /* position: absolute; */
+  z-index: 10;
+}
+
+.timePoint-half-hour {
+  font-size: 12px;
+}
+
+.day-tasks {
+  width: 200px;
+  height: 100%;
+  position: relative;
+  left: -52px;
+}
+
+.task {
+  text-align: start;
+  align-items: flex-start;
+  background-color: #e2ecf5;
+  border-left: 2px solid #6e9ecf;
+  position: absolute;
+  z-index: 2;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 200;
+  line-height: 16px;
+  color: #000000;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.close-btn {
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  position: absolute;
+  top: -2px;
+  right: -3px;
+  opacity: 0;
+}
+
+.task:hover .close-btn {
+  opacity: 1;
+}
