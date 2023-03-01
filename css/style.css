@@ -53,9 +53,7 @@ body {
 
 .day-tasks {
   width: 200px;
-  height: 100%;
   position: relative;
-  left: -52px;
 }
 
 .task {
@@ -87,4 +85,83 @@ body {
 
 .task:hover .close-btn {
   opacity: 1;
+}
+
+
+.create-task-form {
+  width: 250px;
+}
+
+.task-form {
+  display: none;
+  position: absolute;
+  border: 1px solid grey;
+  border-radius: 15px;
+  background-color: rgb(241, 241, 241);
+  flex-direction: column;
+  z-index: 100;
+}
+
+
+.close-modal-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  border: none;
+  background-color: rgba(245, 222, 179, 0);
+  font-weight: bold;
+}
+
+.close-modal-btn:hover {
+  font-size: 18px;
+}
+
+
+.task-form__title-label {
+  display: block;
+  padding: 10px 30px;
+}
+
+.task-form__input {
+  width: 150px;
+  margin: 10px 0;
+}
+
+.task-form__title {
+  width: 160px;
+  height: 22px;
+}
+
+
+.task-form__input-start {
+  display: block;
+  align-items: center;
+  margin-left: 28px;
+}
+
+
+.task-form__start {
+  width: 74px;
+  margin-left: 15px;
+}
+
+.task-form__input-end {
+  display: block;
+  margin-left: 28px;
+}
+
+.task-form__end {
+  width: 74px;
+  margin-left: 25px;
+}
+
+.add-event-btn {
+  display: block;
+  margin: 10px auto;
+  color: #fff;
+  background-color: #474747;
+  border-radius: 5px;
+  border-color: #474747;
+  width: 150px;
+  height: 35px;
 }
