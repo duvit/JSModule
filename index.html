@@ -14,38 +14,36 @@
   </head>
   <body>
     <wrapper class="wrapper">
+      <form class="task-form" id="newTask" action="">
+        <label class="task-form__title-label" for="task-form__title"
+          >Event<input
+            class="task-form__input task-form__title"
+            id="eventTitle"
+        /></label>
+        <label class="task-form__input-start" for="task-form__start"
+          >Start time
+          <input
+            id="eventStartTime"
+            class="task-form__input task-form__start"
+            type="time"
+            min="08:00"
+            max="17:00"
+        /></label>
+        <label class="task-form__input-end" for="task-form__end"
+          >End time<input
+            id="eventEndTime"
+            class="task-form__input task-form__end"
+            type="time"
+            min="08:00"
+            max="17:00"
+        /></label>
+        <button class="add-event-btn" id="addEventBtn" form="newTask">
+          Add event
+        </button>
+      </form>
       <div class="routine-table">
         <div class="timeline"></div>
-        <div class="day-tasks">
-          <form class="task-form" id="newTask" action="">
-            <button class="close-modal-btn">x</button>
-            <label class="task-form__title-label" for="task-form__title"
-              >Event<input
-                class="task-form__input task-form__title"
-                id="eventTitle"
-            /></label>
-            <label class="task-form__input-start" for="task-form__start"
-              >Start time
-              <input
-                id="eventStartTime"
-                class="task-form__input task-form__start"
-                type="time"
-                min="08:00"
-                max="17:00"
-            /></label>
-            <label class="task-form__input-end" for="task-form__end"
-              >End time<input
-                id="eventEndTime"
-                class="task-form__input task-form__end"
-                type="time"
-                min="08:00"
-                max="17:00"
-            /></label>
-            <button class="add-event-btn" id="addEventBtn" form="newTask">
-              Add event
-            </button>
-          </form>
-        </div>
+        <div class="day-tasks"></div>
       </div>
     </wrapper>
     <script src="./js/script.js"></script>

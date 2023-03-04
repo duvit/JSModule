@@ -1,6 +1,5 @@
 const tasks = [
   { start: 0, duration: 15, title: "Exercise" },
-  { start: 5, duration: 15, title: "Exercise" },
   { start: 25, duration: 30, title: "Travel to work" },
   { start: 30, duration: 30, title: "Plan day" },
   { start: 60, duration: 15, title: "Rewiev yesterday's commits" },
@@ -32,7 +31,6 @@ function createTimeline(start, hours) {
     timeContainer.append(halfHourPoint);
   }
 }
-
 createTimeline(8, 10);
 
 class Event {
@@ -62,30 +60,6 @@ class Event {
     this.left = value;
   }
 
-  static checkTasksCrossing() {
-    const n = Event.allEvents.length;
-    const crossingTasks = [];
-
-    for (let i = 0, j = 1; i < n, j < n; i++, j++) {
-      const prevElem = Event.allEvents[i];
-      const currElem = Event.allEvents[j];
-
-      if (prevElem.start + prevElem.duration > currElem.start) {
-        crossingTasks.push(Event.allEvents[i], Event.allEvents[j]);
-      } else {
-        const uniqueCrossings = [...new Set(crossingTasks)];
-
-        uniqueCrossings.forEach((event) => {
-          event.setWidth(196 / uniqueCrossings.length);
-          event.setLeft(
-            uniqueCrossings.indexOf(event) * (200 / uniqueCrossings.length)
-          );
-        });
-        crossingTasks.length = 0;
-      }
-    }
-  }
-
   createTask() {
     const tasksContainer = document.querySelector(".day-tasks");
     const containerHeight = tasksContainer.getBoundingClientRect().height;
@@ -103,43 +77,75 @@ class Event {
     this.closeBtn.classList = "close-btn";
     this.closeBtn.addEventListener("click", (event) => {
       event.stopPropagation();
-      event.target.parentElement.remove();
-      Event.allEvents.splice(Event.allEvents.indexOf(this), 1);
-      Event.checkTasksCrossing();
+      Event.allEvents.splice(
+        Event.allEvents.findIndex((el) => this.title == el.title),
+        1
+      );
+      Event.reRender(Event.allEvents);
     });
-
     this.task.prepend(this.closeBtn);
+
     tasksContainer.prepend(this.task);
     Event.checkTasksCrossing();
   }
-}
 
-function addNewTastk() {
-  const tasksContainer = document.querySelector(".day-tasks");
-  const form = document.querySelector(".task-form");
+  static checkTasksCrossing() {
+    const n = Event.allEvents.length;
+    const crossingGroup = new Map();
 
-  tasksContainer.addEventListener("click", showModal);
+    for (let i = 0; i < n; i++) {
+      const event = Event.allEvents[i];
+      let group = 0;
 
-  function showModal(event) {
-    event.stopPropagation();
+      for (const [groupId, groupEvents] of crossingGroup) {
+        const groupLastEvent = groupEvents[groupEvents.length - 1];
+        if (groupLastEvent.start + groupLastEvent.duration > event.start) {
+          group = groupId;
+          break;
+        }
+      }
 
-    form.style.display = "block";
-    form.style.top = event.clientY + "px";
-    form.style.left = event.clientX - 42 + "px";
+      if (group) {
+        crossingGroup.get(group).push(event);
+      } else {
+        crossingGroup.set(crossingGroup.size, [event]);
+      }
+    }
 
-    tasksContainer.removeEventListener("click", showModal);
+    crossingGroup.forEach((groupEvents) => {
+      groupEvents.forEach((event, index) => {
+        const borderSize = 2;
+        const groupSize = groupEvents.length;
+        const totalSize = 200;
+        const width = (totalSize - (groupSize - 1) * borderSize) / groupSize;
+        event.setWidth(width);
+        event.setLeft(index * (width + borderSize));
+      });
+    });
   }
 
-  tasksContainer.addEventListener("click", showModal);
-
-  document
-    .querySelector(".close-modal-btn")
-    .addEventListener("click", (event) => {
-      event.preventDefault();
-      form.style.display = "none";
+  static reRender(tasksArray) {
+    const tasksContainer = document.querySelector(".day-tasks");
+    tasksContainer.innerHTML = "";
+    Event.checkTasksCrossing();
+    tasksArray.forEach((el) => {
+      tasksContainer.prepend(el.task);
     });
+  }
 
-  function converStartTime(string) {
+  static renderAll(tasksArray) {
+    Event.allEvents.length = 0;
+
+    tasksArray
+      .map((el) => new Event(el))
+      .forEach((el) => {
+        el.createTask();
+      });
+  }
+}
+
+function addNewTask() {
+  function convertStartTime(string) {
     const timeArr = string.split(":");
     const hours = Number(timeArr[0]) - 8;
     const minutes = Number(timeArr[1]);
@@ -147,12 +153,12 @@ function addNewTastk() {
     return startTime;
   }
 
-  function converEndTime(string) {
+  function convertEndTime(string) {
     const timeArr = string.split(":");
     const hours = Number(timeArr[0]) - 8;
     const minutes = Number(timeArr[1]);
     const timeAmount = hours * 60 + minutes;
-    const duration = timeAmount - converStartTime(eventStartTime.value);
+    const duration = timeAmount - convertStartTime(eventStartTime.value);
     return duration;
   }
 
@@ -165,25 +171,17 @@ function addNewTastk() {
     const eventEndTime = document.querySelector("#eventEndTime");
 
     const newEvent = {
-      start: converStartTime(eventStartTime.value),
-      duration: converEndTime(eventEndTime.value),
+      start: convertStartTime(eventStartTime.value),
+      duration: convertEndTime(eventEndTime.value),
       title: eventTitle.value,
     };
 
     tasks.push(newEvent);
-    console.log(tasks);
-    updateTasks();
+    Event.checkTasksCrossing()
+    Event.renderAll(tasks);
   });
 }
 
-addNewTastk();
+addNewTask();
 
-function updateTasks() {
-  tasks
-    .map((el) => new Event(el))
-    .forEach((el) => {
-      el.createTask();
-    });
-}
-
-updateTasks();
+Event.renderAll(tasks);
