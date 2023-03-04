@@ -18,7 +18,6 @@ body {
 }
 
 .timeline {
-
   width: 42px;
   align-items: center;
   text-align: center;
@@ -88,11 +87,6 @@ body {
   opacity: 1;
 }
 
-
-.create-task-form {
-  width: 250px;
-}
-
 .task-form {
   display: block;
   width: 250px;
@@ -151,18 +145,4 @@ body {
   width: 150px;
   height: 35px;
   cursor: pointer;
-}
-
-
-
-.modal {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 200px;
-  height: 200px;
-  background-color: white;
-  border: 1px solid black;
-  padding: 10px;
-  z-index: 999;
 }

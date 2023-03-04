@@ -146,7 +146,6 @@ class Event {
       if (a.start < b.start) return -1;
       return 0;
     });
-    // Event.checkTasksCrossing();
     Event.reRender(Event.allEvents);
   }
 }
