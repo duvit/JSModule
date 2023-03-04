@@ -4,7 +4,8 @@ body {
 
 .wrapper {
   position: relative;
-  left: 50%;
+  left: 30%;
+  display: flex;
 }
 
 .routine-table {
@@ -43,7 +44,6 @@ body {
   height: 1px;
   border-top: 1px solid #c0c0c073;
   width: 244px;
-  /* position: absolute; */
   z-index: 10;
 }
 
@@ -81,6 +81,7 @@ body {
   top: -2px;
   right: -3px;
   opacity: 0;
+  cursor: pointer;
 }
 
 .task:hover .close-btn {
@@ -93,18 +94,19 @@ body {
 }
 
 .task-form {
-  position: absolute;
-  left: -400px;
+  display: block;
+  width: 250px;
+  height: 220px;
+  margin: 10px 20px 0px -50px;
   border: 1px solid grey;
   border-radius: 15px;
   background-color: rgb(241, 241, 241);
   flex-direction: column;
-  z-index: 100;
 }
 
 .task-form__title-label {
   display: block;
-  padding: 10px 30px 0px;
+  padding: 10px 0px 0px 30px;
 }
 
 .task-form__input {
@@ -113,11 +115,10 @@ body {
 }
 
 .task-form__title {
-  width: 160px;
+  width: 140px;
   height: 22px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
-
 
 .task-form__input-start {
   display: block;
@@ -127,7 +128,7 @@ body {
 
 .task-form__start {
   width: 74px;
-  margin-left: 75px;
+  margin-left: 45px;
 }
 
 .task-form__input-end {
@@ -137,7 +138,7 @@ body {
 
 .task-form__end {
   width: 74px;
-  margin-left: 85px;
+  margin-left: 55px;
 }
 
 .add-event-btn {
@@ -149,7 +150,10 @@ body {
   border-color: #474747;
   width: 150px;
   height: 35px;
+  cursor: pointer;
 }
+
+
 
 .modal {
   position: absolute;

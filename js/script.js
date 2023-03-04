@@ -77,10 +77,7 @@ class Event {
     this.closeBtn.classList = "close-btn";
     this.closeBtn.addEventListener("click", (event) => {
       event.stopPropagation();
-      Event.allEvents.splice(
-        Event.allEvents.findIndex((el) => this.title == el.title),
-        1
-      );
+      Event.allEvents = Event.allEvents.filter((el) => this.title !== el.title);
       Event.reRender(Event.allEvents);
     });
     this.task.prepend(this.closeBtn);
@@ -124,15 +121,6 @@ class Event {
     });
   }
 
-  static reRender(tasksArray) {
-    const tasksContainer = document.querySelector(".day-tasks");
-    tasksContainer.innerHTML = "";
-    Event.checkTasksCrossing();
-    tasksArray.forEach((el) => {
-      tasksContainer.prepend(el.task);
-    });
-  }
-
   static renderAll(tasksArray) {
     Event.allEvents.length = 0;
 
@@ -142,9 +130,34 @@ class Event {
         el.createTask();
       });
   }
+
+  static reRender(tasksArray) {
+    const tasksContainer = document.querySelector(".day-tasks");
+    tasksContainer.innerHTML = "";
+    tasksArray.forEach((el) => {
+      el.createTask();
+    });
+  }
+
+  static addNewEvent(event) {
+    const newEvent = new Event(event);
+    Event.allEvents.sort((a, b) => {
+      if (a.start > b.start) return 1;
+      if (a.start < b.start) return -1;
+      return 0;
+    });
+    // Event.checkTasksCrossing();
+    Event.reRender(Event.allEvents);
+  }
 }
 
-function addNewTask() {
+const addEventButton = document.querySelector("#addEventBtn");
+addEventButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  const titleInput = document.querySelector("#eventTitle");
+  const startInput = document.querySelector("#eventStartTime");
+  const durationInput = document.querySelector("#eventEndTime");
+
   function convertStartTime(string) {
     const timeArr = string.split(":");
     const hours = Number(timeArr[0]) - 8;
@@ -158,30 +171,18 @@ function addNewTask() {
     const hours = Number(timeArr[0]) - 8;
     const minutes = Number(timeArr[1]);
     const timeAmount = hours * 60 + minutes;
-    const duration = timeAmount - convertStartTime(eventStartTime.value);
+    const duration = timeAmount - convertStartTime(startInput.value);
     return duration;
   }
 
-  const addEventBtn = document.querySelector("#addEventBtn");
-  addEventBtn.addEventListener("click", (event) => {
-    event.preventDefault();
+  const newEvent = {
+    start: convertStartTime(eventStartTime.value),
+    duration: convertEndTime(durationInput.value),
+    title: titleInput.value,
+  };
 
-    const eventTitle = document.querySelector("#eventTitle");
-    const eventStartTime = document.querySelector("#eventStartTime");
-    const eventEndTime = document.querySelector("#eventEndTime");
-
-    const newEvent = {
-      start: convertStartTime(eventStartTime.value),
-      duration: convertEndTime(eventEndTime.value),
-      title: eventTitle.value,
-    };
-
-    tasks.push(newEvent);
-    Event.checkTasksCrossing()
-    Event.renderAll(tasks);
-  });
-}
-
-addNewTask();
+  Event.addNewEvent(newEvent);
+  Event.checkTasksCrossing();
+});
 
 Event.renderAll(tasks);
